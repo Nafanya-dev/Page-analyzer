@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+{% endfor %}
+{% endif %}
+
+{% block headline1 %}Сайт: {{ name }}{% endblock %}
+
+{% block content %}
+<div class="table-responsive">
+    <table class="table table-bordered table-hover text-nowrap" data-test="url">
+        <tbody>
+            <tr>
+                <td>ID</td>
+                <td>{{ id }}</td>
+            </tr>
+            <tr>
+                <td>Имя</td>
+                <td>{{ name }}</td>
+            </tr>
+            <tr>
+                <td>Дата создания</td>
+                <td>{{ created_at }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h2 class="mt-5 mb-3">Проверки</h2>
+<form method="post" action="/urls/checks">
+    <input type="submit" class="btn btn-primary" value="Запустить проверку">
+</form>
+<div>
+    <table class="table table-bordered table-hover mt-2" data-test="checks">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Код ответа</th>
+                <th>h1</th>
+                <th>title</th>
+                <th>description</th>
+                <th>Дата создания</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+{% endblock %}
