@@ -14,21 +14,21 @@
         <tbody>
             <tr>
                 <td>ID</td>
-                <td>{{ id }}</td>
+                <td>{{ url.id }}</td>
             </tr>
             <tr>
                 <td>Имя</td>
-                <td>{{ name }}</td>
+                <td>{{ url.name }}</td>
             </tr>
             <tr>
                 <td>Дата создания</td>
-                <td>{{ created_at }}</td>
+                <td>{{ url.created_at }}</td>
             </tr>
         </tbody>
     </table>
 </div>
 <h2 class="mt-5 mb-3">Проверки</h2>
-<form method="post" action="/urls/checks">
+<form method="post" action="{{ url_for('add_check_url', id=url.id) }}">
     <input type="submit" class="btn btn-primary" value="Запустить проверку">
 </form>
 <div>
@@ -42,6 +42,16 @@
                 <th>description</th>
                 <th>Дата создания</th>
             </tr>
+            {% for url_checked in urls_checked %}
+            <tr>
+                <th>{{ url_checked.id }}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>{{ url_checked.created_at }}</th>
+            </tr>
+            {% endfor %}
         </thead>
     </table>
 </div>

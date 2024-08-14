@@ -40,8 +40,9 @@ def add_url():
             url=new_url
         )
     normalized_url = normalize_url(new_url)
-    url = Url(name=normalized_url)
-    if db.is_there_url(url, DATABASE_URL):
+    id_ = db.get_id(normalized_url, DATABASE_URL)
+    url = Url(name=normalized_url, id=id_)
+    if url.id:
         flash('Страница уже существует', 'info')
         return redirect(url_for('show_url', id=url.id))
     db.save_url(url, DATABASE_URL)
@@ -54,12 +55,12 @@ def add_url():
 def show_url(id):
     messages = get_flashed_messages(with_categories=True)
     url = db.get_url(id, DATABASE_URL)
+    urls_checked = db.get_checked_urls(url, DATABASE_URL)
     return render_template(
         'showURL.html',
         messages=messages,
-        created_at=url.created_at,
-        name=url.name,
-        id=url.id
+        url=url,
+        urls_checked=urls_checked
     )
 
 
@@ -70,3 +71,10 @@ def show_all_urls():
         'showURLS.html',
         urls=urls
     )
+
+
+@app.route('/urls/<id>/checks', methods=['POST'])
+def add_check_url(id):
+    db.check_url(id, DATABASE_URL)
+    flash('Страница успешно проверена', 'success')
+    return redirect(url_for('show_url', id=id))
