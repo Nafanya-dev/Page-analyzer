@@ -6,10 +6,9 @@ from flask import (
     url_for,
     flash,
     get_flashed_messages,
-    session
 )
 
-from page_analyzer.moduls.url_manager import normalize_url, validate
+from page_analyzer.moduls.url_manager import normalize_url, validate, check_url
 from page_analyzer.moduls.models import Url
 from page_analyzer.moduls import db
 from dotenv import load_dotenv
@@ -47,7 +46,6 @@ def add_url():
         return redirect(url_for('show_url', id=url.id))
     db.save_url(url, DATABASE_URL)
     flash('Страница успешно добавлена', 'success')
-    session['name'] = url.name
     return redirect(url_for('show_url', id=url.id))
 
 
@@ -74,7 +72,12 @@ def show_all_urls():
 
 
 @app.route('/urls/<id>/checks', methods=['POST'])
-def add_check_url(id):
-    db.check_url(id, DATABASE_URL)
-    flash('Страница успешно проверена', 'success')
+def check_and_add_url(id):
+    url = db.get_url(id, DATABASE_URL)
+    url_checked = check_url(url)
+    if not url_checked:
+        flash('Произошла ошибка при проверке', 'danger')
+    else:
+        flash('Страница успешно проверена', 'success')
+        db.add_checked_url(url, url_checked, DATABASE_URL)
     return redirect(url_for('show_url', id=id))

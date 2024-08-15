@@ -20,8 +20,8 @@
           <td>
             <a href="{{ url_for('show_url', id=url.id) }}">{{ url.name }}</a>
           </td>
-          <td>{% if url.created_at %}{{ url.created_at }}{% endif %}</td>
-          <td>{% if url.created_at %}{% endif %}</td>
+          <td>{{ url.created_at if url.created_at else '' }}</td>
+          <td>{{ url.status_code if url.status_code else '' }}</td>
         </tr>
     {% endfor %}
     </tbody>

@@ -6,7 +6,7 @@
 {% endfor %}
 {% endif %}
 
-{% block headline1 %}Сайт: {{ name }}{% endblock %}
+{% block headline1 %}Сайт: {{ url.name }}{% endblock %}
 
 {% block content %}
 <div class="table-responsive">
@@ -28,7 +28,7 @@
     </table>
 </div>
 <h2 class="mt-5 mb-3">Проверки</h2>
-<form method="post" action="{{ url_for('add_check_url', id=url.id) }}">
+<form method="post" action="{{ url_for('check_and_add_url', id=url.id) }}">
     <input type="submit" class="btn btn-primary" value="Запустить проверку">
 </form>
 <div>
@@ -45,10 +45,10 @@
             {% for url_checked in urls_checked %}
             <tr>
                 <th>{{ url_checked.id }}</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th>{{ url_checked.status_code if url_checked.status_code else '' }}</th>
+                <th>{{ url_checked.h1 if url_checked.h1 else '' }}</th>
+                <th>{{ url_checked.title if url_checked.title else '' }}</th>
+                <th>{{ url_checked.description if url_checked.description else '' }}</th>
                 <th>{{ url_checked.created_at }}</th>
             </tr>
             {% endfor %}

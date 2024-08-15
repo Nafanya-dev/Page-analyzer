@@ -23,15 +23,15 @@ def save_url(url, database):
             commit(conn)
 
 
-def check_url(id_, database):
+def add_checked_url(url, url_checked, database):
     sql = """
-        INSERT INTO url_checks (url_id, created_at)
-        VALUES (%s, %s);
+        INSERT INTO url_checks (url_id, status_code, created_at)
+        VALUES (%s, %s, %s);
         """
     with get_connection(database) as conn:
         with conn.cursor(cursor_factory=DictCursor) as cur:
             current_time = datetime.now().date()
-            cur.execute(sql, (id_, current_time))
+            cur.execute(sql, (url.id, url_checked.status_code, current_time))
             commit(conn)
 
 
@@ -61,7 +61,8 @@ def get_url(id_, database):
 
 def get_all_urls(database):
     sql = """
-        SELECT urls.id, urls.name, url_checks.created_at
+        SELECT urls.id, urls.name,
+        url_checks.created_at, url_checks.status_code
         FROM urls
         LEFT JOIN url_checks ON urls.id = url_checks.url_id
         WHERE url_checks.url_id IS NULL OR
@@ -80,7 +81,7 @@ def get_all_urls(database):
 
 def get_checked_urls(url, database):
     sql = """
-        SELECT id, created_at
+        SELECT id, status_code, created_at
         FROM url_checks
         WHERE url_id = %s
         ORDER BY id DESC;

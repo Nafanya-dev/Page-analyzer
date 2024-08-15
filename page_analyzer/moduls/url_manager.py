@@ -1,5 +1,7 @@
 from validators.url import url as url_validator
 from urllib.parse import urlparse
+from .models import UrlCheck
+import requests
 
 MAX_LENGTH_URL = 255
 
@@ -20,3 +22,13 @@ def validate(url):
         if len(url) > MAX_LENGTH_URL:
             errors['message'] = 'URL превышает 255 символов'
     return errors
+
+
+def check_url(url):
+    try:
+        with requests.get(url.name) as r:
+            r.raise_for_status()
+            status_code = r.status_code
+            return UrlCheck(status_code=status_code)
+    except requests.exceptions.RequestException:
+        return None
