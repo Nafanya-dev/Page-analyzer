@@ -37,7 +37,7 @@ def add_url():
             'index.html',
             messages=messages,
             url=new_url
-        )
+        ), 422
     normalized_url = normalize_url(new_url)
     id_ = db.get_id(normalized_url, DATABASE_URL)
     url = Url(name=normalized_url, id=id_)

@@ -42,17 +42,19 @@
                 <th>description</th>
                 <th>Дата создания</th>
             </tr>
-            {% for url_checked in urls_checked %}
-            <tr>
-                <th>{{ url_checked.id }}</th>
-                <th>{{ url_checked.status_code if url_checked.status_code else '' }}</th>
-                <th>{{ url_checked.h1 if url_checked.h1 else '' }}</th>
-                <th>{{ url_checked.title if url_checked.title else '' }}</th>
-                <th>{{ url_checked.description if url_checked.description else '' }}</th>
-                <th>{{ url_checked.created_at }}</th>
-            </tr>
-            {% endfor %}
         </thead>
+        {% for url_checked in urls_checked %}
+        <tbody>
+            <tr>
+                <td>{{ url_checked.id }}</td>
+                <td>{{ url_checked.status_code if url_checked.status_code else '' }}</td>
+                <td>{{ url_checked.h1 if url_checked.h1 else '' }}</td>
+                <td>{{ url_checked.title if url_checked.title else '' }}</td>
+                <td>{{ url_checked.description if url_checked.description else '' }}</td>
+                <td>{{ url_checked.created_at }}</td>
+            </tr>
+        </tbody>
+        {% endfor %}
     </table>
 </div>
 {% endblock %}
