@@ -75,7 +75,7 @@ def show_all_urls():
 def check_and_add_url(id):
     url = db.get_url(id, DATABASE_URL)
     url_checked = check_url(url)
-    if not url_checked:
+    if not url_checked or url_checked.status_code != 200:
         flash('Произошла ошибка при проверке', 'danger')
     else:
         flash('Страница успешно проверена', 'success')

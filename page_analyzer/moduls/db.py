@@ -25,13 +25,19 @@ def save_url(url, database):
 
 def add_checked_url(url, url_checked, database):
     sql = """
-        INSERT INTO url_checks (url_id, status_code, created_at)
-        VALUES (%s, %s, %s);
+        INSERT INTO url_checks (url_id,
+        status_code, created_at, h1,
+        title, description)
+        VALUES (%s, %s, %s, %s, %s, %s);
         """
     with get_connection(database) as conn:
         with conn.cursor(cursor_factory=DictCursor) as cur:
-            current_time = datetime.now().date()
-            cur.execute(sql, (url.id, url_checked.status_code, current_time))
+            cur.execute(sql, (url.id,
+                              url_checked.status_code,
+                              url_checked.created_at,
+                              url_checked.h1,
+                              url_checked.title,
+                              url_checked.description))
             commit(conn)
 
 
@@ -81,7 +87,7 @@ def get_all_urls(database):
 
 def get_checked_urls(url, database):
     sql = """
-        SELECT id, status_code, created_at
+        SELECT id, status_code, h1, title, description, created_at
         FROM url_checks
         WHERE url_id = %s
         ORDER BY id DESC;
