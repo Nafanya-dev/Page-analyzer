@@ -4,6 +4,7 @@ __pycache__
 dist/
 
 .env
+.idea/
 *.pyc
 .venv/
 .coverage
