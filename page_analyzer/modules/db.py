@@ -2,11 +2,8 @@ import psycopg2
 from psycopg2.extras import DictCursor
 from datetime import datetime
 from .models import Url, UrlCheck
-from .config import DATABASE_URL
+from .config import DATABASE_URL as DATABASE
 from typing import Optional
-
-
-DATABASE: Optional[str] = DATABASE_URL
 
 
 def get_connection(data_base: str):
@@ -63,8 +60,8 @@ def get_id(name: str) -> Optional[int]:
     with get_connection(DATABASE) as conn:
         with conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute(sql, (name,))
-            result = cur.fetchone()
-            return result.get("id") if result is not None else None
+            result = cur.fetchone() or {}
+            return result.get("id")
 
 
 def get_url(id_: id) -> Url:
@@ -127,5 +124,5 @@ def get_checked_urls(url: Url) -> list:
     with get_connection(DATABASE) as conn:
         with conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute(sql, (url.id,))
-            result = cur.fetchall()
-            return result if result else []
+            result = [*cur.fetchall()]
+            return result
