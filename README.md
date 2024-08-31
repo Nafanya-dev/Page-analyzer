@@ -45,7 +45,7 @@ As database the PostgreSQL database system is being used. You need to install it
 To use the application, you need to clone the repository to your computer. This is done using the `git clone` command. Clone the project:
 
 ```bash
->> git clone https://github.com/Nafanya-dev/python-project-83.git && cd python-project-83
+>> git clone https://github.com/Nafanya-dev/Page-analyzer.git && cd Page-analyzer
 ```
 
 Then you have to install all necessary dependencies:
